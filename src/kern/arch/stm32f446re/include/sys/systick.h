@@ -1,5 +1,5 @@
-#ifndef __SYS_H
-#define __SYS_H
+#ifndef __SYSTICK_H
+#define __SYSTICK_H
 
 #include <stdint.h>
 #include "./stm32_peps.h"
