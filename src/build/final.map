@@ -1,0 +1,271 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x0000000008000000 0x0000000000080000 xr
+SRAM             0x0000000020000000 0x0000000000020000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD build/kern_arch_stm32f446re_dev_clock.o
+LOAD build/kern_arch_stm32f446re_dev_gpio.o
+LOAD build/kern_arch_stm32f446re_dev_timer.o
+LOAD build/kern_arch_stm32f446re_dev_usart.o
+LOAD build/kern_arch_stm32f446re_sys_stm32_startup.o
+LOAD build/kern_arch_stm32f446re_sys_sys.o
+LOAD build/kern_kmain_kmain.o
+LOAD build/kern_kmain_sys_init.o
+LOAD build/kern_kstdio_kstdio.o
+
+.text           0x0000000008000000      0xf68
+                0x0000000008000000                _stext = .
+ *(.isr_vector)
+ .isr_vector    0x0000000008000000      0x1c4 build/kern_arch_stm32f446re_sys_stm32_startup.o
+                0x0000000008000000                NVIC_VECTOR
+ *(.text)
+ .text          0x00000000080001c4       0xbc build/kern_arch_stm32f446re_dev_clock.o
+                0x00000000080001c4                DRV_CLOCK_INIT
+ .text          0x0000000008000280       0x20 build/kern_arch_stm32f446re_dev_gpio.o
+                0x0000000008000280                DRV_GPIO_INIT
+ .text          0x00000000080002a0        0xe build/kern_arch_stm32f446re_dev_timer.o
+                0x00000000080002a0                DRV_TIMER_INIT
+ *fill*         0x00000000080002ae        0x2 
+ .text          0x00000000080002b0      0x238 build/kern_arch_stm32f446re_dev_usart.o
+                0x00000000080002b0                DRV_USART_INIT
+                0x000000000800036c                UART_SendChar
+                0x000000000800039a                _USART_WRITE
+                0x00000000080003c8                _USART_READ_WORD
+                0x0000000008000462                _USART_READ
+                0x00000000080004be                UART_GetChar
+ .text          0x00000000080004e8       0xec build/kern_arch_stm32f446re_sys_stm32_startup.o
+                0x00000000080004e8                Reset_Handler
+                0x00000000080005a0                RTC_WKUP_Handler
+                0x00000000080005a0                FLASH_Handler
+                0x00000000080005a0                SVCall_Handler
+                0x00000000080005a0                DMA2_Stream7_Handler
+                0x00000000080005a0                OTG_HS_Handler
+                0x00000000080005a0                DMA2_Stream3_Handler
+                0x00000000080005a0                USART3_Handler
+                0x00000000080005a0                PendSV_Handler
+                0x00000000080005a0                NMI_Handler
+                0x00000000080005a0                SAI1_Handler
+                0x00000000080005a0                TIM6_DAC_Handler
+                0x00000000080005a0                CAN1_RX1_Handler
+                0x00000000080005a0                EXTI15_10_Handler
+                0x00000000080005a0                ADC_Handler
+                0x00000000080005a0                I2C1_EV_Handler
+                0x00000000080005a0                TAMP_STAMP_Handler
+                0x00000000080005a0                I2C3_ER_Handler
+                0x00000000080005a0                WWDG_Handler
+                0x00000000080005a0                EXTI4_Handler
+                0x00000000080005a0                I2C3_EV_Handler
+                0x00000000080005a0                DMA1_Stream1_Handler
+                0x00000000080005a0                DMA2_Stream4_Handler
+                0x00000000080005a0                DMA1_Stream7_Handler
+                0x00000000080005a0                OTG_FS_Handler
+                0x00000000080005a0                TIM1_BRK_TIM9_Handler
+                0x00000000080005a0                I2C1_ER_Handler
+                0x00000000080005a0                DMA1_Stream3_Handler
+                0x00000000080005a0                UsageFault_Handler
+                0x00000000080005a0                TIM1_UP_TIM10_Handler
+                0x00000000080005a0                CAN1_RX0_Handler
+                0x00000000080005a0                TIM1_CC_Handler
+                0x00000000080005a0                I2C2_ER_Handler
+                0x00000000080005a0                USART6_Handler
+                0x00000000080005a0                TIM8_CC_Handler
+                0x00000000080005a0                HDMI_CEC_Handler
+                0x00000000080005a0                SAI2_Handler
+                0x00000000080005a0                CAN1_SCE_Handler
+                0x00000000080005a0                DMA1_Stream0_Handler
+                0x00000000080005a0                OTG_HS_EP1_OUT_Handler
+                0x00000000080005a0                EXTI1_Handler
+                0x00000000080005a0                FMC_Handler
+                0x00000000080005a0                EXTI3_Handler
+                0x00000000080005a0                EXTI2_Handler
+                0x00000000080005a0                UART4_Handler
+                0x00000000080005a0                CAN2_RX1_Handler
+                0x00000000080005a0                EXTI9_5_Handler
+                0x00000000080005a0                TIM2_Handler
+                0x00000000080005a0                USART1_Handler
+                0x00000000080005a0                CAN2_SCE_Handler
+                0x00000000080005a0                TIM3_Handler
+                0x00000000080005a0                DMA2_Stream6_Handler
+                0x00000000080005a0                Default_Handler
+                0x00000000080005a0                DCMI_Handler
+                0x00000000080005a0                TIM1_TRG_COM_TIM11_Handler
+                0x00000000080005a0                RTC_Alarm_Handler
+                0x00000000080005a0                TIM4_Handler
+                0x00000000080005a0                TIM8_UP_TIM13_Handler
+                0x00000000080005a0                CAN2_TX_Handler
+                0x00000000080005a0                SPI2_Handler
+                0x00000000080005a0                DMA2_Stream1_Handler
+                0x00000000080005a0                DMA1_Stream2_Handler
+                0x00000000080005a0                EXTI0_Handler
+                0x00000000080005a0                TIM8_BRK_TIM12_Handler
+                0x00000000080005a0                CAN2_RX0_Handler
+                0x00000000080005a0                DMA2_Stream5_Handler
+                0x00000000080005a0                DMA1_Stream6_Handler
+                0x00000000080005a0                SDIO_Handler
+                0x00000000080005a0                FMPI2C1_ERR_Handler
+                0x00000000080005a0                USART2_Handler
+                0x00000000080005a0                SPI1_Handler
+                0x00000000080005a0                I2C2_EV_Handler
+                0x00000000080005a0                SPDIF_Rx_Handler
+                0x00000000080005a0                DMA2_Stream2_Handler
+                0x00000000080005a0                SPI3_Handler
+                0x00000000080005a0                DMA2_Stream0_Handler
+                0x00000000080005a0                RCC_Handler
+                0x00000000080005a0                PVD_Handler
+                0x00000000080005a0                UART5_Handler
+                0x00000000080005a0                DMA1_Stream5_Handler
+                0x00000000080005a0                TIM5_Handler
+                0x00000000080005a0                QuadSPI_Handler
+                0x00000000080005a0                TIM7_Handler
+                0x00000000080005a0                TIM8_TRG_COM_TIM14_Handler
+                0x00000000080005a0                CAN1_TX_Handler
+                0x00000000080005a0                FPU_Handler
+                0x00000000080005a0                FMPI2C1_Handler
+                0x00000000080005a0                DMA1_Stream4_Handler
+                0x00000000080005a0                DebugMonitor_Handler
+                0x00000000080005a0                OTG_HS_WKUP_Handler
+                0x00000000080005a0                OTG_FS_WKUP_Handler
+                0x00000000080005a0                SPI4_Handler
+                0x00000000080005a0                OTG_HS_EP1_IN_Handler
+                0x00000000080005a6                HardFault_Handler
+                0x00000000080005ac                MemManage_Handler
+                0x00000000080005b2                BusFault_Handler
+                0x00000000080005b8                update_global_tick_count
+ .text          0x00000000080005d4      0x190 build/kern_arch_stm32f446re_sys_sys.o
+                0x00000000080005d4                NVIC_EnableIRQ
+                0x0000000008000608                NVIC_SetPriority
+                0x0000000008000640                SysTick_Handler
+                0x000000000800065c                sysTick_init
+                0x00000000080006a0                sysTick_enable
+                0x00000000080006d8                sysTick_disable
+                0x0000000008000704                getSysTickCount
+                0x000000000800071c                updateSysTick
+                0x0000000008000744                getTime
+ .text          0x0000000008000764       0x34 build/kern_kmain_kmain.o
+                0x0000000008000764                kmain
+ .text          0x0000000008000798       0x48 build/kern_kmain_sys_init.o
+                0x0000000008000798                DRV_FPU_ACTIVE
+                0x00000000080007bc                __sys_init
+ .text          0x00000000080007e0      0x764 build/kern_kstdio_kstdio.o
+                0x00000000080007e0                itoa
+                0x00000000080008e4                ftoa
+                0x00000000080009d6                atoi
+                0x0000000008000b1c                atof
+                0x0000000008000cfe                kprintf
+                0x0000000008000e20                kscanf
+                0x0000000008000f2c                newline
+ *(.text.*)
+ *(.init)
+ *(.fini)
+ *(.rodata)
+ .rodata        0x0000000008000f44        0x4 build/kern_arch_stm32f446re_sys_sys.o
+ .rodata        0x0000000008000f48       0x1f build/kern_kstdio_kstdio.o
+ *(.rodata.*)
+                0x0000000008000f68                . = ALIGN (0x4)
+ *fill*         0x0000000008000f67        0x1 
+                0x0000000008000f68                _etext = .
+                0x0000000008000f68                _la_data = LOADADDR (.data)
+
+.glue_7         0x0000000008000f68        0x0
+ .glue_7        0x0000000008000f68        0x0 linker stubs
+
+.glue_7t        0x0000000008000f68        0x0
+ .glue_7t       0x0000000008000f68        0x0 linker stubs
+
+.vfp11_veneer   0x0000000008000f68        0x0
+ .vfp11_veneer  0x0000000008000f68        0x0 linker stubs
+
+.v4_bx          0x0000000008000f68        0x0
+ .v4_bx         0x0000000008000f68        0x0 linker stubs
+
+.iplt           0x0000000008000f68        0x0
+ .iplt          0x0000000008000f68        0x0 build/kern_arch_stm32f446re_dev_usart.o
+
+.rel.dyn        0x0000000008000f68        0x0
+ .rel.iplt      0x0000000008000f68        0x0 build/kern_arch_stm32f446re_dev_usart.o
+
+.data           0x0000000020000000        0x0 load address 0x0000000008000f68
+                0x0000000020000000                _sdata = .
+ *(.data)
+ .data          0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_clock.o
+ .data          0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_gpio.o
+ .data          0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_timer.o
+ .data          0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_usart.o
+ .data          0x0000000020000000        0x0 build/kern_arch_stm32f446re_sys_stm32_startup.o
+ .data          0x0000000020000000        0x0 build/kern_arch_stm32f446re_sys_sys.o
+ .data          0x0000000020000000        0x0 build/kern_kmain_kmain.o
+ .data          0x0000000020000000        0x0 build/kern_kmain_sys_init.o
+ .data          0x0000000020000000        0x0 build/kern_kstdio_kstdio.o
+ *(.data.*)
+                0x0000000020000000                . = ALIGN (0x4)
+                0x0000000020000000                _edata = .
+
+.igot.plt       0x0000000020000000        0x0 load address 0x0000000008000f68
+ .igot.plt      0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_usart.o
+
+.bss            0x0000000020000000       0x14 load address 0x0000000008000f68
+                0x0000000020000000                _sbss = .
+                0x0000000020000000                __bss_start__ = _sbss
+ *(.bss)
+ .bss           0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_clock.o
+ .bss           0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_gpio.o
+ .bss           0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_timer.o
+ .bss           0x0000000020000000        0x0 build/kern_arch_stm32f446re_dev_usart.o
+ .bss           0x0000000020000000       0x10 build/kern_arch_stm32f446re_sys_stm32_startup.o
+                0x0000000020000000                _bss_size
+                0x0000000020000004                _data_size
+                0x0000000020000008                _text_size
+                0x000000002000000c                g_tick_count
+ .bss           0x0000000020000010        0x4 build/kern_arch_stm32f446re_sys_sys.o
+                0x0000000020000010                mscount
+ .bss           0x0000000020000014        0x0 build/kern_kmain_kmain.o
+ .bss           0x0000000020000014        0x0 build/kern_kmain_sys_init.o
+ .bss           0x0000000020000014        0x0 build/kern_kstdio_kstdio.o
+ *(.bss.*)
+ *(COMMON)
+                0x0000000020000014                . = ALIGN (0x4)
+                0x0000000020000014                _ebss = .
+                0x0000000020000014                __bss_end__ = _ebss
+                0x0000000020000014                . = ALIGN (0x4)
+                0x0000000020000014                end = .
+                0x0000000020000014                __end__ = .
+OUTPUT(build/final.elf elf32-littlearm)
+LOAD linker stubs
+
+.comment        0x0000000000000000       0x33
+ .comment       0x0000000000000000       0x33 build/kern_arch_stm32f446re_dev_clock.o
+                                         0x34 (size before relaxing)
+ .comment       0x0000000000000033       0x34 build/kern_arch_stm32f446re_dev_gpio.o
+ .comment       0x0000000000000033       0x34 build/kern_arch_stm32f446re_dev_timer.o
+ .comment       0x0000000000000033       0x34 build/kern_arch_stm32f446re_dev_usart.o
+ .comment       0x0000000000000033       0x34 build/kern_arch_stm32f446re_sys_stm32_startup.o
+ .comment       0x0000000000000033       0x34 build/kern_arch_stm32f446re_sys_sys.o
+ .comment       0x0000000000000033       0x34 build/kern_kmain_kmain.o
+ .comment       0x0000000000000033       0x34 build/kern_kmain_sys_init.o
+ .comment       0x0000000000000033       0x34 build/kern_kstdio_kstdio.o
+
+.ARM.attributes
+                0x0000000000000000       0x32
+ .ARM.attributes
+                0x0000000000000000       0x32 build/kern_arch_stm32f446re_dev_clock.o
+ .ARM.attributes
+                0x0000000000000032       0x32 build/kern_arch_stm32f446re_dev_gpio.o
+ .ARM.attributes
+                0x0000000000000064       0x32 build/kern_arch_stm32f446re_dev_timer.o
+ .ARM.attributes
+                0x0000000000000096       0x32 build/kern_arch_stm32f446re_dev_usart.o
+ .ARM.attributes
+                0x00000000000000c8       0x32 build/kern_arch_stm32f446re_sys_stm32_startup.o
+ .ARM.attributes
+                0x00000000000000fa       0x32 build/kern_arch_stm32f446re_sys_sys.o
+ .ARM.attributes
+                0x000000000000012c       0x32 build/kern_kmain_kmain.o
+ .ARM.attributes
+                0x000000000000015e       0x32 build/kern_kmain_sys_init.o
+ .ARM.attributes
+                0x0000000000000190       0x32 build/kern_kstdio_kstdio.o
