@@ -66,6 +66,121 @@ void updateSysTick(uint32_t tick)
 
 uint32_t getTime(void)
 {
-   
+
     return mscount + (STK->LOAD - STK->VAL) / clockFreq;
+}
+
+void __NVIC_SetPriority(IRQn_TypeDef IRQn, uint32_t priority)
+{
+
+    if (IRQn < 0)
+    {
+        uint32_t pri = (uint32_t)((int32_t)IRQn);
+        if (pri >= 4 && pri <= 6)
+        {
+            SCB->SHPR1 |= (uint8_t)priority << ((pri - 4) * 8);
+        }
+        else if (pri == 11)
+        {
+            SCB->SHPR2 |= (uint8_t)priority << 24;
+        }
+        else if (pri == 14)
+        {
+            SCB->SHPR3 |= (uint8_t)priority << 16;
+        }
+        else if (pri == 15)
+        {
+            SCB->SHPR3 |= (uint8_t)priority << 24;
+        }
+    }
+    else
+    {
+
+        NVIC->IP[IRQn] = (uint8_t)priority;
+    }
+}
+uint32_t __NVIC_GetPriority(IRQn_TypeDef IRQn)
+{
+
+    if (IRQn < 0)
+    {
+        uint32_t pri = (uint32_t)((int32_t)IRQn);
+        if (pri >= 4 && pri <= 6)
+        {
+            uint32_t r1 = SCB->SHPR1;
+            return (r1 >> ((pri - 4) * 8)) & 0xff;
+        }
+        else if (pri == 11)
+        {
+            uint32_t r2 = SCB->SHPR2;
+            return r2 >> 24;
+        }
+        else if (pri == 14)
+        {
+            uint32_t r3 = SCB->SHPR3;
+            return (r3 >> 16) & 0xff;
+        }
+        else if (pri == 15)
+        {
+            uint32_t r3 = SCB->SHPR3;
+            return r3 >> 24;
+        }
+    }
+    else
+    {
+
+        return NVIC->IP[IRQn];
+    }
+}
+void __NVIC_EnableIRQn(IRQn_TypeDef IRQn)
+{
+    if ((int32_t)(IRQn) >= 0)
+    {
+        uint32_t i = IRQn / 32;
+        uint32_t j = IRQn % 32;
+        NVIC->ISER[i] = (uint32_t)(1 << j);
+    }
+}
+void __NVIC_DisableIRQn(IRQn_TypeDef IRQn)
+{
+    if ((int32_t)(IRQn) >= 0)
+    {
+        uint32_t i = IRQn / 32;
+        uint32_t j = IRQn % 32;
+        NVIC->ICER[i] = (uint32_t)(1 << j);
+    }
+}
+void __disable_irq()
+{
+}
+void __set_BASEPRI(uint32_t value)
+{
+}
+void __enable_irq() {}
+void __unset_BASEPRI(uint32_t value) {}
+void __set_PRIMASK(uint32_t priMask) {}
+void __enable_fault_irq(void) {}
+void __set_FAULTMASK(uint32_t faultMask) {}
+void __disable_fault_irq(void) {}
+uint32_t __get_FAULTMASK(void) {}
+void __clear_pending_IRQn(IRQn_TypeDef IRQn)
+{
+    if ((int32_t)(IRQn) >= 0)
+    {
+        uint32_t i = IRQn / 32;
+        uint32_t j = IRQn % 32;
+        NVIC->ICPR[i] = (uint32_t)(1 << j);
+    }
+}
+uint32_t __get_pending_IRQn(IRQn_TypeDef IRQn)
+{
+    uint32_t i = IRQn / 32;
+    uint32_t j = IRQn % 32;
+    return (uint32_t)((NVIC->ISPR[i] & (uint32_t)(1 << j)) == 0 ? 0 : 1);
+}
+uint32_t __NVIC_GetActive(IRQn_TypeDef IRQn)
+{
+    uint32_t i = IRQn / 32;
+    uint32_t j = IRQn % 32;
+    return (uint32_t)((NVIC->IABR[i] & (uint32_t)(1 << j)) == 0 ? 0 : 1);
 }

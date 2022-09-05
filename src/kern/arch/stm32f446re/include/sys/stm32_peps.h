@@ -207,13 +207,4 @@ typedef struct
     uint32_t volatile OR;    /*!< TIM option register, Address offset: 0x50 */
 } TIM_TypeDef;
 
-typedef struct
-{
-    volatile uint32_t CTRL;  // enableSysTick,clocksource,systickinterruptandcountflag
-    volatile uint32_t LOAD;  // 24bits−−ReloadRegister;maximumcount
-    volatile uint32_t VAL;   // Currentcountvaluesimiliarto‘CNT’oftimer
-    volatile uint32_t CALIB; // CalibrationRegister
-} SysTick_Typedef;
-
-
 #endif
