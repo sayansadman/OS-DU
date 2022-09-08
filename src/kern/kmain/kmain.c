@@ -5,29 +5,21 @@
 #include "../arch/stm32f446re/include/dev/timer.h"
 #include <stdint.h>
 
-void kmain(void)
-{
+void kmain(void) {
 	__sys_init();
 
 	sysTick_init(10);
 	int t = 0;
-	while (1)
-	{
-		Delay_ms(1000);
-		t += 1000;
-		kprintf((uint8_t *)"%s", (uint8_t *)"TIM6: ");
-		kprintf((uint8_t *)"%d", (uint8_t *)&t);
-		kprintf((uint8_t *)"%s", (uint8_t *)" Systick: ");
-		int ms = getTime();
-		kprintf((uint8_t *)"%d\n", (uint8_t *)&ms);
-		newline();
-		if (t == 5000)
-		{
-			sysTick_disable();
-		}
-		if (t == 10000)
-		{
-			sysTick_enable();
-		}
+	while (1) {
+		Delay_ms(5000);
+		__NVIC_EnableIRQn(USART2_IRQn);
+		kprintf((uint8_t*)"%s", (uint8_t*)"USART2 IRQ enabled");
+		Delay_ms(5000);
+		__NVIC_DisableIRQn(USART2_IRQn);
+		kprintf((uint8_t*)"%s", (uint8_t*)"USART2 IRQ enabled");
 	}
+}
+
+void USART2_Handler() {
+	kprintf((uint8_t*)"%s", (uint8_t*)"USART2 IRQ handler invoked");
 }
