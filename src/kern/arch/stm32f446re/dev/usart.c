@@ -1,4 +1,6 @@
+#include "../include/sys/sys.h"
 #include "../include/dev/usart.h"
+
 void DRV_USART_INIT(USART_TypeDef* usart) {
 	/*****Modify according to your need *****/
 
@@ -28,6 +30,15 @@ void DRV_USART_INIT(USART_TypeDef* usart) {
 	//  6. Enable transmission TE and recieption bits in USART_CR1 register
 	USART2->CR1 |= (1 << 2); // enable RE for receiver
 	USART2->CR1 |= (1 << 3); //enable TE for transmitter
+	USART2->CR1 |= (1 << 5); // RXNEIE=1.. Enable Receiver not empty interrupt
+	__NVIC_SetPriority(USART2_IRQn, 12);
+	__NVIC_EnableIRQn(USART2_IRQn);
+}
+
+void DRV_USART2_RXNE_Enable() {
+	USART2->CR1 |= (1 << 5); // RXNEIE=1.. Enable Receiver not empty interrupt
+	// __NVIC_SetPriority(USART2_IRQn, 1);
+	// __NVIC_EnableIRQn(USART2_IRQn);
 }
 /*****Modify according to your need *****/
 void UART_SendChar(USART_TypeDef* usart, uint8_t c) {
