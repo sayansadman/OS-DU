@@ -12,10 +12,12 @@ void kmain(void) {
 	sysTick_init(10);
 	while (1) {
 		Delay_ms(5000);
-		__NVIC_EnableIRQn(USART2_IRQn);
+		// __NVIC_EnableIRQn(USART2_IRQn);
+		__enable_irq();
 		kprintf((uint8_t*)"%s", (uint8_t*)"\nUSART2 IRQ enabled\n");
 		Delay_ms(5000);
-		__NVIC_DisableIRQn(USART2_IRQn);
+		// __NVIC_DisableIRQn(USART2_IRQn);
+		__disable_irq();
 		kprintf((uint8_t*)"%s", (uint8_t*)"\nUSART2 IRQ disabled\n");
 	}
 }

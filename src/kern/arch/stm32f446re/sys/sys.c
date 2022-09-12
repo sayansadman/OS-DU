@@ -2,6 +2,10 @@
 #include "../include/sys/sys.h"
 #include "../include/sys/stm32_peps.h"
 #include "../../../include/kstdio.h"
+
+#ifndef __ASM
+#define __ASM __asm
+#endif
 volatile uint32_t mscount = 0;
 // since we are using clock source AHB/8
 // frequency 180MHz / 8 = 22.5 MHz
@@ -126,46 +130,6 @@ void __NVIC_DisableIRQn(IRQn_TypeDef IRQn) {
         NVIC->ICER[i] |= (uint32_t)(1 << j);
     }
 }
-static inline void __set_BASEPRI(uint32_t value) {
-    register uint32_t regBASEPRI asm("basepri");
-    regBASEPRI = (value & 0xff);
-}
-void __disable_irq() {
-    __set_PRIMASK(1);
-}
-void __enable_irq() {
-    __set_PRIMASK(0);
-}
-static inline void __unset_BASEPRI(uint32_t value) {
-    register uint32_t regBASEPRI asm("basepri");
-    __set_BASEPRI(regBASEPRI - value);
-}
-
-uint32_t __get_PRIMASK(void) {
-    register uint32_t regPRIMASK asm("primask");
-    return(regPRIMASK);
-}
-
-
-static inline void __set_PRIMASK(uint32_t priMask) {
-    register uint32_t regPRIMASK asm("primask");
-    regPRIMASK = (priMask);
-}
-
-void __enable_fault_irq(void) {
-    __set_FAULTMASK(0);
-}
-static inline void __set_FAULTMASK(uint32_t faultMask) {
-    register uint32_t __regFaultMask asm("faultmask");
-    __regFaultMask = (faultMask & (uint32_t)1);
-}
-void __disable_fault_irq(void) {
-    __set_FAULTMASK(1);
-}
-static inline uint32_t __get_FAULTMASK(void) {
-    register uint32_t __regFaultMask asm("faultmask");
-    return (__regFaultMask);
-}
 
 void __clear_pending_IRQn(IRQn_TypeDef IRQn) {
     if ((int32_t)(IRQn) >= 0) {
@@ -183,4 +147,55 @@ uint32_t __NVIC_GetActive(IRQn_TypeDef IRQn) {
     uint32_t i = IRQn / 32;
     uint32_t j = IRQn % 32;
     return (uint32_t)((NVIC->IABR[i] & (uint32_t)(1 << j)) == 0 ? 0 : 1);
+}
+
+__attribute__((always_inline)) static inline uint32_t __get_BASEPRI(void) {
+    uint32_t result;
+    __ASM volatile ("MRS %0, basepri" : "=r" (result));
+    return(result);
+}
+__attribute__((always_inline)) static inline void __set_BASEPRI(uint32_t value) {
+    __ASM volatile ("MSR basepri, %0" : : "r" (value) : "memory");
+}
+
+__attribute__((always_inline)) static inline void __unset_BASEPRI(uint32_t value) {
+    __set_BASEPRI(__get_BASEPRI() - value);
+}
+
+
+__attribute__((always_inline)) static inline uint32_t __get_PRIMASK(void) {
+    uint32_t result;
+
+    __ASM volatile ("MRS %0, primask" : "=r" (result));
+    return(result);
+}
+__attribute__((always_inline)) static inline void __set_PRIMASK(uint32_t priMask) {
+    __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+}
+
+
+__attribute__((always_inline)) static inline void __set_FAULTMASK(uint32_t faultMask) {
+    __asm volatile ("MSR faultmask, %0" : : "r" (faultMask) : "memory");
+}
+
+__attribute__((always_inline)) static inline uint32_t __get_FAULTMASK(void) {
+    uint32_t result;
+
+    __ASM volatile ("MRS %0, faultmask" : "=r" (result));
+    return(result);
+}
+
+void __disable_irq() {
+    __set_PRIMASK(1);
+}
+void __enable_irq() {
+    __set_PRIMASK(0);
+}
+
+void __enable_fault_irq(void) {
+    __set_FAULTMASK(0);
+}
+
+void __disable_fault_irq(void) {
+    __set_FAULTMASK(1);
 }
