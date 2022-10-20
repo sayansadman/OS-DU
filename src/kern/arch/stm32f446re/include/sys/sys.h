@@ -4,14 +4,16 @@
 #include <stdint.h>
 #include "./stm32_peps.h"
 
-typedef struct {
+typedef struct
+{
     volatile uint32_t CTRL;  // enableSysTick,clocksource,systickinterruptandcountflag
     volatile uint32_t LOAD;  // 24bits−−ReloadRegister;maximumcount
     volatile uint32_t VAL;   // Currentcountvaluesimiliarto‘CNT’oftimer
     volatile uint32_t CALIB; // CalibrationRegister
 } SysTick_TypeDef;
 
-typedef struct {
+typedef struct
+{
     volatile uint32_t CPUID; // CPUID Base Register 0x0
     volatile uint32_t ICSR;  // Interrupt Control and State Register 0x4
     volatile uint32_t VTOR;  // Vector Table Offset Register 0x8
@@ -37,16 +39,17 @@ typedef struct {
  * @brief STM32F4XX Interrupt Number Definition, according to the selected device
  *        in @ref Library_configuration_section
  */
-typedef enum {
+typedef enum
+{
     /******  Cortex-M4 Processor Exceptions Numbers ****************************************************************/
-    NonMaskableInt_IRQn = -14,    /*!< 2 Non Maskable Interrupt                                          */
-    MemoryManagement_IRQn = -12,  /*!< 4 Cortex-M4 Memory Management Interrupt                           */
-    BusFault_IRQn = -11,          /*!< 5 Cortex-M4 Bus Fault Interrupt                                   */
-    UsageFault_IRQn = -10,        /*!< 6 Cortex-M4 Usage Fault Interrupt                                 */
-    SVCall_IRQn = -5,             /*!< 11 Cortex-M4 SV Call Interrupt                                    */
-    DebugMonitor_IRQn = -4,       /*!< 12 Cortex-M4 Debug Monitor Interrupt                              */
-    PendSV_IRQn = -2,             /*!< 14 Cortex-M4 Pend SV Interrupt                                    */
-    SysTick_IRQn = -1,            /*!< 15 Cortex-M4 System Tick Interrupt                                */
+    NonMaskableInt_IRQn = -14,   /*!< 2 Non Maskable Interrupt                                          */
+    MemoryManagement_IRQn = -12, /*!< 4 Cortex-M4 Memory Management Interrupt                           */
+    BusFault_IRQn = -11,         /*!< 5 Cortex-M4 Bus Fault Interrupt                                   */
+    UsageFault_IRQn = -10,       /*!< 6 Cortex-M4 Usage Fault Interrupt                                 */
+    SVCall_IRQn = -5,            /*!< 11 Cortex-M4 SV Call Interrupt                                    */
+    DebugMonitor_IRQn = -4,      /*!< 12 Cortex-M4 Debug Monitor Interrupt                              */
+    PendSV_IRQn = -2,            /*!< 14 Cortex-M4 Pend SV Interrupt                                    */
+    SysTick_IRQn = -1,           /*!< 15 Cortex-M4 System Tick Interrupt                                */
     /******  STM32 specific Interrupt Numbers **********************************************************************/
     WWDG_IRQn = 0,                /*!< Window WatchDog Interrupt                                         */
     PVD_IRQn = 1,                 /*!< PVD through EXTI Line detection Interrupt                         */
@@ -143,10 +146,11 @@ typedef enum {
   @{
  */
 
- /**
-   \brief  Structure type to access the Nested Vectored Interrupt Controller (NVIC).
-  */
-typedef struct {
+/**
+  \brief  Structure type to access the Nested Vectored Interrupt Controller (NVIC).
+ */
+typedef struct
+{
     // define NVIC register compenenets -- use volatile data type
     volatile uint32_t ISER[8]; /*!< Offset: 0x000 addr: 0xE000E100 Interrupt Set Enable Register*/
     uint32_t RESERVED0[24];
@@ -201,6 +205,14 @@ uint32_t __NVIC_GetActive(IRQn_TypeDef IRQn);
 // static inline uint32_t __get_PRIMASK(void);
 // static inline void __set_FAULTMASK(uint32_t faultMask);
 // static inline uint32_t __get_FAULTMASK(void);
+
+uint32_t get_faultMask();
+uint32_t get_priMask();
+uint32_t get_basePri();
+
+void set_faultMask(uint32_t);
+void set_priMask(uint32_t);
+void set_basePri(uint32_t);
 
 void __disable_irq();
 void __enable_irq();
